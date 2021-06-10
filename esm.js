@@ -111,7 +111,9 @@ if (nativeContent !== "") {
     filename: "esm.js"
   }
 } else {
-  cachePath = existsSync(opts.cache) ? opts.cache : sep + "node_modules" + sep + ".cache" + sep + "esm"
+  cachePath = existsSync(opts.cache)
+      ? opts.cache
+      : __dirname + sep + "node_modules" + sep + ".cache" + sep + "esm"
   cachedData = readFile(cachePath + sep + ".data.blob")
   content = readFile(__dirname + sep + "esm" + sep + "loader.js", "utf8")
 
