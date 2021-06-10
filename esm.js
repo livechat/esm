@@ -45,9 +45,17 @@ const {
 const { sep } = require("path")
 const { readFileSync, existsSync } = require("fs")
 
+const realParent = (daddy = parent) => {
+  if (!daddy.parent) {
+    return daddy;
+  }
+
+  return realParent(daddy.parent);
+}
+
 const { esm: opts = {} } = JSON.parse(
     readFileSync(
-        parent
+        realParent()
             .paths
             .map(p => p.replace('node_modules', 'package.json'))
             .find(existsSync)
