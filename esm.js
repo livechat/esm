@@ -45,17 +45,21 @@ const {
 const { sep } = require("path")
 const { readFileSync, existsSync } = require("fs")
 
-const realParent = (daddy = parent) => {
-  if (!daddy.parent) {
-    return daddy;
-  }
+let realParent = null;
 
-  return realParent(daddy.parent);
+if (!realParent) {
+  realParent = (daddy => {
+    if (!daddy.parent) {
+      return daddy;
+    }
+
+    return realParent(daddy.parent);
+  })(parent);
 }
 
 const { esm: opts = {} } = JSON.parse(
     readFileSync(
-        realParent()
+        realParent
             .paths
             .map(p => p.replace('node_modules', 'package.json'))
             .find(existsSync)
@@ -170,7 +174,6 @@ let shared
 shared = loadESM()
 
 if (cachePath !== "") {
-  console.log('esm.cachePath: ', cachePath);
   const { dir } = shared.package;
 
   let cache = dir.get(cachePath)
