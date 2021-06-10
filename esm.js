@@ -162,7 +162,8 @@ let shared
 shared = loadESM()
 
 if (cachePath !== "") {
-  const { dir } = shared.package
+  console.log('esm.cachePath: ', cachePath);
+  const { dir } = shared.package;
 
   let cache = dir.get(cachePath)
 
